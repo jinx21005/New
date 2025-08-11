@@ -1,43 +1,39 @@
-const FEED_URL = 'wallpapers.json';
 const container = document.getElementById('wallpaper-container');
-const refreshBtn = document.getElementById('refreshBtn');
+let page = 1;
+let loading = false;
 
-let wallpapers = [];
-let loadedCount = 0;
-const batchSize = 10; // number of wallpapers to load per batch
+const FEED_URL = 'https://wallpaper-backend-fix.fakeitit21.repl.co/api/wallpapers?page=';
 
-async function fetchWallpapers() {
+async function loadWallpapers() {
+  if (loading) return;
+  loading = true;
+
   try {
-    const res = await fetch(FEED_URL);
-    wallpapers = await res.json();
-  } catch(e) {
-    wallpapers = [];
+    const res = await fetch(FEED_URL + page);
+    const wallpapers = await res.json();
+
+    wallpapers.forEach(url => {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = "Wallpaper";
+      img.className = "wallpaper-img";
+      container.appendChild(img);
+    });
+
+    page++;
+  } catch (e) {
+    console.error('Failed to load wallpapers', e);
   }
-  loadedCount = 0;
-  container.innerHTML = '';
-  loadMoreWallpapers();
+
+  loading = false;
 }
 
-function loadMoreWallpapers() {
-  if (loadedCount >= wallpapers.length) return;
-  const nextBatch = wallpapers.slice(loadedCount, loadedCount + batchSize);
-  nextBatch.forEach(url => {
-    const img = document.createElement('img');
-    img.src = url + '?auto=format&fit=crop&w=800&q=80';
-    img.loading = 'lazy';
-    img.className = 'tile';
-    container.appendChild(img);
-  });
-  loadedCount += nextBatch.length;
-}
+// Load initial wallpapers
+loadWallpapers();
 
+// Infinite scroll
 window.addEventListener('scroll', () => {
-  if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 150)) {
-    loadMoreWallpapers();
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+    loadWallpapers();
   }
 });
-
-refreshBtn.addEventListener('click', fetchWallpapers);
-
-// Initial load
-fetchWallpapers();
