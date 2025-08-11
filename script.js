@@ -2,7 +2,7 @@ const container = document.getElementById('wallpaper-container');
 let page = 1;
 let loading = false;
 
-const FEED_URL = 'https://wallpaper-backend-fix.fakeitit21.repl.co/api/wallpapers?page=';
+const FEED_URL = 'https://cb72c345-40e0-4026-b798-ef65d85471f9-00-nb1sx8ei6h7l.pike.replit.dev:3000/api/wallpapers?page=';
 
 async function loadWallpapers() {
   if (loading) return;
