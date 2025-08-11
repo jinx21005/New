@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GlassView Wallpapers — Infinite Scroll Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">GlassView</div>
+    <nav class="topnav">
+      <button id="refreshBtn" aria-label="Refresh">⟳</button>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
+    <section class="controls">
+      <input id="search" type="search" placeholder="Search (title / author / source)" disabled />
+    </section>
+
+    <section id="wallpaper-container" class="grid" aria-live="polite"></section>
+
+    <div id="empty" class="empty" hidden>No wallpapers found.</div>
+  </main>
+
+  <template id="tileTemplate">
+    <article class="tile">
+      <img class="thumb" loading="lazy" alt="" />
+      <div class="tile-info">
+        <div class="t-title"></div>
+        <div class="t-sub"></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
